@@ -3,135 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tìm kiếm thông tin bệnh nhân</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        input[type="text"], input[type="date"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button {
-            background-color: #28a745;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f4f4f4;
-        }
-    </style>
+    <title>Danh sách bệnh nhân</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Tìm kiếm thông tin bệnh nhân</h1>
-    <div class="search-container">
-        <div class="form-group">
-            <label for="searchName">Tìm kiếm theo tên:</label>
-            <input type="text" id="searchName" placeholder="Nhập họ và tên">
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">
+            Danh sách bệnh nhân nhập viện trong 30 ngày gần nhất
+        </h1>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="min-w-full table-auto border-collapse border border-gray-200">
+                <thead>
+                    <tr class="bg-blue-500 text-white">
+                        <th class="px-4 py-2 border border-gray-300 text-left">Họ và tên</th>
+                        <th class="px-4 py-2 border border-gray-300 text-left">Tuổi</th>
+                        <th class="px-4 py-2 border border-gray-300 text-left">Giới tính</th>
+                        <th class="px-4 py-2 border border-gray-300 text-left">Ngày vào viện</th>
+                        <th class="px-4 py-2 border border-gray-300 text-left">Bác sĩ điều trị</th>
+                        <th class="px-4 py-2 border border-gray-300 text-left">Chẩn đoán</th>
+                        <th class="px-4 py-2 border border-gray-300 text-left">Link hồ sơ</th>
+                    </tr>
+                </thead>
+                <tbody id="resultTableBody">
+                    <!-- Dữ liệu sẽ được hiển thị tại đây -->
+                </tbody>
+            </table>
         </div>
-        <button onclick="searchData()">Tìm kiếm</button>
+        <p id="noDataMessage" class="text-center text-gray-500 mt-4 hidden">
+            Không có bệnh nhân trong 30 ngày gần nhất.
+        </p>
     </div>
-    <table id="resultTable" style="display:none;">
-        <thead>
-            <tr>
-                <th>Họ và tên</th>
-                <th>Tuổi</th>
-                <th>Giới tính</th>
-                <th>Ngày vào viện</th>
-                <th>Bác sĩ điều trị</th>
-                <th>Chẩn đoán</th>
-                <th>Link hồ sơ</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
-    </table>
+
+    <!-- Nút tròn thả nổi -->
+    <a 
+        href="https://script.google.com/macros/s/AKfycbwSGOh0WtSgkdvl6B38QmQ16EWQQxxQEU5pvT8VE6dkrlFNPBFjfLrV4H6T7JvbVHtL/exec" 
+        target="_blank" 
+        class="fixed bottom-6 right-6 bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 transition duration-300"
+        title="Đi tới trang khác"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+    </a>
+
     <script>
+        // Hàm lấy dữ liệu từ Google Sheets
         async function fetchData() {
-            const response = await fetch('https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn');
+            const response = await fetch('https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn'); // Thay URL bằng URL Web App của bạn
             const data = await response.json();
             return data;
         }
 
+        // Hàm lọc bệnh nhân nhập viện trong 30 ngày gần nhất
         function filterRecentEntries(entries) {
+            const today = new Date();
             const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            thirtyDaysAgo.setDate(today.getDate() - 30);
+
             return entries.filter(entry => {
                 const entryDate = new Date(entry.ngayvaovien);
-                return entryDate >= thirtyDaysAgo;
+                return entryDate >= thirtyDaysAgo && entryDate <= today;
             });
         }
 
-        async function searchData() {
-            const searchName = document.getElementById("searchName").value.toLowerCase();
-            const table = document.getElementById("resultTable");
-            const tbody = table.querySelector("tbody");
-
-            tbody.innerHTML = ""; // Clear previous results
-            table.style.display = "none"; // Hide table initially
-
+        // Hàm hiển thị dữ liệu
+        async function displayData() {
+            const tableBody = document.getElementById("resultTableBody");
+            const noDataMessage = document.getElementById("noDataMessage");
             const data = await fetchData();
 
-            const filteredData = filterRecentEntries(data).filter(entry => 
-                entry.hovaten.toLowerCase().includes(searchName)
-            );
+            const filteredData = filterRecentEntries(data);
 
             if (filteredData.length > 0) {
+                noDataMessage.classList.add("hidden");
                 filteredData.forEach(entry => {
                     const row = document.createElement("tr");
+                    row.classList.add("border-t", "hover:bg-gray-100");
+
                     row.innerHTML = `
-                        <td>${entry.hovaten}</td>
-                        <td>${entry.tuoi}</td>
-                        <td>${entry.gioitinh}</td>
-                        <td>${entry.ngayvaovien}</td>
-                        <td>${entry.bacsidieutri}</td>
-                        <td>${entry.chandoan}</td>
-                        <td><a href="${entry.linkhoso}" target="_blank">Xem hồ sơ</a></td>
+                        <td class="px-4 py-2 border border-gray-300">${entry.hovaten}</td>
+                        <td class="px-4 py-2 border border-gray-300">${entry.tuoi}</td>
+                        <td class="px-4 py-2 border border-gray-300">${entry.gioitinh}</td>
+                        <td class="px-4 py-2 border border-gray-300">${entry.ngayvaovien}</td>
+                        <td class="px-4 py-2 border border-gray-300">${entry.bacsidieutri}</td>
+                        <td class="px-4 py-2 border border-gray-300">${entry.chandoan}</td>
+                        <td class="px-4 py-2 border border-gray-300">
+                            <a href="${entry.linkhoso}" target="_blank" class="text-blue-500 underline">Xem hồ sơ</a>
+                        </td>
                     `;
-                    tbody.appendChild(row);
+                    tableBody.appendChild(row);
                 });
-                table.style.display = "table";
             } else {
-                alert("Không tìm thấy kết quả phù hợp.");
+                noDataMessage.classList.remove("hidden");
             }
         }
+
+        // Tự động hiển thị dữ liệu khi tải trang
+        window.onload = displayData;
     </script>
 </body>
 </html>
