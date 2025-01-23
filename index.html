@@ -8,13 +8,21 @@
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
     <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold text-center text-blue-600 mb-6">
-            Danh sách bệnh nhân nhập viện trong 30 ngày gần nhất
-        </h1>
+        <!-- Ô tìm kiếm -->
+        <div class="flex justify-center mb-4">
+            <input 
+                type="text" 
+                id="searchInput" 
+                placeholder="Tìm kiếm bệnh nhân..." 
+                class="w-full max-w-md p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                oninput="filterTable()"
+            />
+        </div>
+
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <table class="min-w-full table-auto border-collapse border border-gray-200">
-                <thead>
-                    <tr class="bg-blue-500 text-white">
+                <thead class="sticky top-0 bg-blue-500 text-white">
+                    <tr>
                         <th class="px-4 py-2 border border-gray-300 text-left">Họ và tên</th>
                         <th class="px-4 py-2 border border-gray-300 text-left">Tuổi</th>
                         <th class="px-4 py-2 border border-gray-300 text-left">Giới tính</th>
@@ -36,13 +44,25 @@
 
     <!-- Nút tròn thả nổi -->
     <a 
-        href="https://script.google.com/macros/s/AKfycbwSGOh0WtSgkdvl6B38QmQ16EWQQxxQEU5pvT8VE6dkrlFNPBFjfLrV4H6T7JvbVHtL/exec" 
+        href="https://script.google.com/macros/s/AKfycbybpXC9kcmCTI0aLPmksXTSx9BwO9I7X81eiH9YaGS2jUsEvG_UkKWPs4EhWp8sR-N2/exec" 
         target="_blank" 
         class="fixed bottom-6 right-6 bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 transition duration-300"
-        title="Đi tới trang khác"
+        title="THÊM HỒ SƠ MỚI"
     >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+        </svg>
+    </a>
+    <!-- Nút tròn thả nổi mới -->
+    <a 
+        href="https://hovuvietthang97.vercel.app" 
+        target="_blank" 
+        id="infoButton"
+        class="fixed bottom-20 right-6 bg-green-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+        title="Thông tin thêm"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 6.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
         </svg>
     </a>
 
@@ -96,6 +116,17 @@
             } else {
                 noDataMessage.classList.remove("hidden");
             }
+        }
+
+        // Hàm lọc bảng theo từ khóa
+        function filterTable() {
+            const input = document.getElementById("searchInput").value.toLowerCase();
+            const rows = document.querySelectorAll("#resultTableBody tr");
+
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(input) ? "" : "none";
+            });
         }
 
         // Tự động hiển thị dữ liệu khi tải trang
