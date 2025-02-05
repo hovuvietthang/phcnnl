@@ -40,18 +40,21 @@
             Không có bệnh nhân trong 30 ngày gần nhất.
         </p>
     </div>
-  <a 
+ <!-- Nút tròn phía trên -->
+<a 
     href="javascript:void(0)" 
-    class="fixed bottom-34 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300 group"
+    class="fixed bottom-32 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300 group"
     title="Hiển thị quy trình"
 >
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
     </svg>
 
-    <!-- Hình ảnh quy trình sẽ hiển thị khi hover -->
-    <div class="absolute -top-16 right-0 w-[40vw] h-[40vw] bg-white shadow-lg hidden group-hover:block">
-        <img src="/quytrinh.png" alt="Quy trình" class="w-full h-full object-cover rounded-lg" />
+    <!-- Popup hiển thị hình ảnh khi hover -->
+    <div class="absolute -top-32 right-0 w-[40vw] h-[40vw] bg-white shadow-lg hidden group-hover:block transition-all duration-300">
+        <div class="relative w-full h-full">
+            <img src="/quytrinh.png" alt="Quy trình" class="w-full h-full object-cover rounded-lg" />
+        </div>
     </div>
 </a>
     <!-- Nút tròn thả nổi -->
