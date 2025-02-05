@@ -40,25 +40,7 @@
             Không có bệnh nhân trong 30 ngày gần nhất.
         </p>
     </div>
-<!-- Nút tròn phía trên -->
-<a 
-    href="javascript:void(0)" 
-    class="fixed bottom-34 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
-    title="Hiển thị quy trình"
-    id="showPopupButton"
->
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-    </svg>
-</a>
 
-<!-- Popup hiển thị hình ảnh khi nhấp -->
-<div id="popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-    <div class="relative w-[80vw] h-[80vh] bg-white shadow-lg rounded-lg">
-        <button id="closePopupButton" class="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full">X</button>
-        <img src="/quytrinh.png" alt="Quy trình" class="w-full h-full object-contain rounded-lg" />
-    </div>
-</div>
     <!-- Nút tròn thả nổi -->
     <a 
         href="https://script.google.com/macros/s/AKfycbwEZvU1t2STHPDlM0JDXmUJxGGYbV2aWAJ9xgLz9MxnqI6p5QnV1CbJym-y4pclDyS4/exec" 
@@ -82,7 +64,25 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 6.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
         </svg>
     </a>
+    <!-- Nút tròn phía trên -->
+<a 
+    href="javascript:void(0)" 
+    class="fixed bottom-34 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
+    title="Hiển thị quy trình"
+    id="showPopupButton"
+>
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+</a>
 
+<!-- Popup hiển thị hình ảnh khi nhấp -->
+<div id="popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="relative w-[80vw] h-[80vh] bg-white shadow-lg rounded-lg">
+        <button id="closePopupButton" class="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full">X</button>
+        <img src="/quytrinh.png" alt="Quy trình" class="w-full h-full object-contain rounded-lg" />
+    </div>
+</div>
     <script>
         // Hàm lấy dữ liệu từ Google Sheets
         async function fetchData() {
