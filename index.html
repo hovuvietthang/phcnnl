@@ -67,7 +67,7 @@
     <!-- Nút tròn phía trên -->
 <a 
     href="javascript:void(0)" 
-    class="fixed bottom-34 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
+    class="fixed top-6 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
     title="Hiển thị quy trình"
     id="showPopupButton"
 >
@@ -79,8 +79,10 @@
 <!-- Popup hiển thị hình ảnh khi nhấp -->
 <div id="popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
     <div class="relative w-[80vw] h-[80vh] bg-white shadow-lg rounded-lg">
+        <!-- Nút đóng -->
         <button id="closePopupButton" class="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full">X</button>
-        <img src="/quytrinh.png" alt="Quy trình" class="w-full h-full object-contain rounded-lg" />
+        <!-- Hình ảnh quy trình -->
+        <img src="path/to/your-image.png" alt="Quy trình" class="w-full h-full object-contain rounded-lg" />
     </div>
 </div>
     <script>
