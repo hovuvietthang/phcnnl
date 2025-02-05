@@ -43,7 +43,7 @@
 <!-- Nút tròn phía trên -->
 <a 
     href="javascript:void(0)" 
-    class="fixed bottom-36 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
+    class="fixed bottom-34 right-6 bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
     title="Hiển thị quy trình"
     id="showPopupButton"
 >
@@ -148,5 +148,29 @@
         // Tự động hiển thị dữ liệu khi tải trang
         window.onload = displayData;
     </script>
+    <script>
+    // Lấy các phần tử
+    const showPopupButton = document.getElementById('showPopupButton');
+    const popup = document.getElementById('popup');
+    const closePopupButton = document.getElementById('closePopupButton');
+
+    // Hiển thị popup khi nhấp vào nút
+    showPopupButton.addEventListener('click', () => {
+        popup.classList.remove('hidden'); // Loại bỏ lớp 'hidden' để popup hiện lên
+    });
+
+    // Đóng popup khi nhấp vào nút "X"
+    closePopupButton.addEventListener('click', () => {
+        popup.classList.add('hidden'); // Thêm lại lớp 'hidden' để popup ẩn đi
+    });
+
+    // Đóng popup khi nhấp ra ngoài (cả vùng đen mờ)
+    popup.addEventListener('click', (event) => {
+        if (event.target === popup) {
+            popup.classList.add('hidden'); // Ẩn popup nếu người dùng nhấp ra ngoài
+        }
+    });
+</script>
+
 </body>
 </html>
