@@ -1,0 +1,29 @@
+/* Đảm bảo bảng có thể cuộn khi không đủ chỗ trên màn hình nhỏ */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Để cuộn mượt trên thiết bị iOS */
+}
+
+/* Thêm padding và giảm độ rộng của các cột cho màn hình nhỏ */
+@media (max-width: 768px) {
+    table {
+        width: 100%;
+    }
+
+    td, th {
+        padding: 8px; /* Giảm padding để tiết kiệm không gian */
+    }
+}
+/* Ẩn một số cột trên thiết bị nhỏ */
+@media (max-width: 768px) {
+    th:nth-child(4), td:nth-child(4) {  /* Ẩn cột giới tính */
+        display: none;
+    }
+
+    th:nth-child(5), td:nth-child(5) {  /* Ẩn cột ngày vào viện */
+        display: none;
+    }
+    th:nth-child(6), td:nth-child(6) {  /* Ẩn cột chẩn đoán*/
+        display: none;
+    }
+}
