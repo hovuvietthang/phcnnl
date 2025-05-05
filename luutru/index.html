@@ -22,6 +22,14 @@
     <!-- Khoảng trống để tránh che bảng -->
     <div class="h-24"></div>
 
+    <!-- Hiển thị Loading và Progress Bar -->
+    <div id="loadingContainer" class="text-center hidden">
+        <p id="loadingText" class="text-gray-600">Đang tìm kiếm...</p>
+        <div class="w-full max-w-xl mx-auto mt-4">
+            <progress id="progressBar" class="w-full h-2 bg-blue-200" value="0" max="100"></progress>
+        </div>
+    </div>
+
     <!-- Bảng dữ liệu -->
     <div class="container mx-auto p-4">
         <table class="min-w-full bg-white shadow rounded">
@@ -53,6 +61,11 @@
 
             const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn";
 
+            // Hiển thị loading và tiến độ
+            document.getElementById("loadingContainer").classList.remove("hidden");
+            const progressBar = document.getElementById("progressBar");
+            progressBar.value = 0;
+
             try {
                 const res = await fetch(url);
                 if (!res.ok) {
@@ -60,19 +73,32 @@
                 }
                 const data = await res.json();
 
-                // Lọc dữ liệu bệnh nhân theo tên
-                const filteredData = data.filter(item => {
-                    // Đảm bảo rằng hovaten luôn là chuỗi trước khi sử dụng toLowerCase
+                // Lọc dữ liệu bệnh nhân theo tên và hiển thị tiến độ
+                let matchedPatients = [];
+                let totalPatients = data.length;
+                let patientsChecked = 0;
+
+                for (let i = 0; i < totalPatients; i++) {
+                    const item = data[i];
                     const name = item.hovaten ? item.hovaten.toString().toLowerCase() : "";
-                    return name.includes(input);
-                });
+                    if (name.includes(input)) {
+                        matchedPatients.push(item);
+                    }
+                    patientsChecked++;
+                    // Cập nhật thanh tiến độ
+                    const progress = Math.floor((patientsChecked / totalPatients) * 100);
+                    progressBar.value = progress;
+                }
 
                 // Hiển thị kết quả tìm kiếm
-                displayData(filteredData);
+                displayData(matchedPatients);
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);
                 document.getElementById("noDataMessage").textContent = `Lỗi khi tải dữ liệu: ${err.message}`;
                 document.getElementById("noDataMessage").classList.remove("hidden");
+            } finally {
+                // Ẩn loading khi xong
+                document.getElementById("loadingContainer").classList.add("hidden");
             }
         }
 
