@@ -40,30 +40,6 @@
         </table>
         <p id="noDataMessage" class="text-center text-gray-500 mt-4 hidden">Không có dữ liệu gần đây.</p>
     </div>
-
-    <!-- Nút nổi -->
-    <div class="fixed bottom-6 right-6 space-y-4">
-        <a href="https://script.google.com/macros/s/AKfycbwIbonN6gGwyQDNxwkIGCUYQEcNFngNgFGQmSDeuLkIWHu5YDrz6IV4g4xYx2_3Z2A/exec" 
-           target="_blank" title="Thêm mới" 
-           class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600">
-            +
-        </a>
-        <button 
-            id="showPopupButton" 
-            title="Xem quy trình" 
-            class="w-12 h-12 flex items-center justify-center rounded-full bg-yellow-500 text-white shadow-lg hover:bg-yellow-600">
-            ?
-        </button>
-    </div>
-
-    <!-- Popup ảnh -->
-    <div id="popup" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-        <div class="bg-white p-4 rounded relative max-w-3xl w-full">
-            <button id="closePopupButton" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-8 h-8">X</button>
-            <img src="/quytrinh.png" alt="Quy trình" class="w-full"/>
-        </div>
-    </div>
-
     <script>
         async function fetchData() {
             const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn"; // Rút gọn URL thực tế
