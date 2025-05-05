@@ -43,61 +43,64 @@
 
     <script>
         // Hàm tìm kiếm bệnh nhân
-        async function searchPatient() {
-            const input = document.getElementById("searchInput").value.trim().toLowerCase();
-            if (!input) {
-                alert("Vui lòng nhập tên bệnh nhân.");
-                return;
-            }
+async function searchPatient() {
+    const input = document.getElementById("searchInput").value.trim().toLowerCase();
+    if (!input) {
+        alert("Vui lòng nhập tên bệnh nhân.");
+        return;
+    }
 
-            const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn";
-            try {
-                const res = await fetch(url);
-                if (!res.ok) {
-                    throw new Error(`Lỗi API: ${res.status} - ${res.statusText}`);
-                }
-                const data = await res.json();
-
-                // Lọc dữ liệu bệnh nhân theo tên
-                const filteredData = data.filter(item =>
-                    item.hovaten.toLowerCase().includes(input)
-                );
-
-                // Hiển thị kết quả tìm kiếm
-                displayData(filteredData);
-            } catch (err) {
-                console.error("Lỗi khi tải dữ liệu:", err);
-                document.getElementById("noDataMessage").textContent = `Lỗi khi tải dữ liệu: ${err.message}`;
-                document.getElementById("noDataMessage").classList.remove("hidden");
-            }
+    const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn";
+    try {
+        const res = await fetch(url);
+        if (!res.ok) {
+            throw new Error(`Lỗi API: ${res.status} - ${res.statusText}`);
         }
+        const data = await res.json();
 
-        // Hàm hiển thị dữ liệu tìm kiếm
-        function displayData(data) {
-            const tbody = document.getElementById("resultTableBody");
-            tbody.innerHTML = ""; // Xóa dữ liệu cũ
+        // Lọc dữ liệu bệnh nhân theo tên
+        const filteredData = data.filter(item => {
+            // Đảm bảo rằng hovaten luôn là chuỗi trước khi sử dụng toLowerCase
+            const name = item.hovaten ? item.hovaten.toString().toLowerCase() : "";
+            return name.includes(input);
+        });
 
-            if (data.length === 0) {
-                document.getElementById("noDataMessage").classList.remove("hidden");
-            } else {
-                document.getElementById("noDataMessage").classList.add("hidden");
-                data.forEach(item => {
-                    const row = `
-                        <tr class="border-b">
-                            <td class="p-2">${item.sohsba || ""}</td>
-                            <td class="p-2">${item.hovaten || ""}</td>
-                            <td class="p-2">${item.tuoi || ""}</td>
-                            <td class="p-2">${item.gioitinh || ""}</td>
-                            <td class="p-2">${item.ngayvaovien || ""}</td>
-                            <td class="p-2">${item.chandoan || ""}</td>
-                            <td class="p-2">
-                                <a href="${item.linkhoso}" target="_blank" class="text-blue-500 underline">Xem</a>
-                            </td>
-                        </tr>`;
-                    tbody.innerHTML += row;
-                });
-            }
-        }
+        // Hiển thị kết quả tìm kiếm
+        displayData(filteredData);
+    } catch (err) {
+        console.error("Lỗi khi tải dữ liệu:", err);
+        document.getElementById("noDataMessage").textContent = `Lỗi khi tải dữ liệu: ${err.message}`;
+        document.getElementById("noDataMessage").classList.remove("hidden");
+    }
+}
+
+// Hàm hiển thị dữ liệu tìm kiếm
+function displayData(data) {
+    const tbody = document.getElementById("resultTableBody");
+    tbody.innerHTML = ""; // Xóa dữ liệu cũ
+
+    if (data.length === 0) {
+        document.getElementById("noDataMessage").classList.remove("hidden");
+    } else {
+        document.getElementById("noDataMessage").classList.add("hidden");
+        data.forEach(item => {
+            const row = `
+                <tr class="border-b">
+                    <td class="p-2">${item.sohsba || ""}</td>
+                    <td class="p-2">${item.hovaten || ""}</td>
+                    <td class="p-2">${item.tuoi || ""}</td>
+                    <td class="p-2">${item.gioitinh || ""}</td>
+                    <td class="p-2">${item.ngayvaovien || ""}</td>
+                    <td class="p-2">${item.chandoan || ""}</td>
+                    <td class="p-2">
+                        <a href="${item.linkhoso}" target="_blank" class="text-blue-500 underline">Xem</a>
+                    </td>
+                </tr>`;
+            tbody.innerHTML += row;
+        });
+    }
+}
+
     </script>
 </body>
 </html>
