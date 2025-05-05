@@ -12,12 +12,10 @@
 <body class="bg-gray-100 text-gray-800 font-sans">
      <!-- Ô tìm kiếm -->
 <div class="fixed top-0 left-0 right-0 flex justify-center mb-4 bg-white shadow-md z-10 p-4">
-    <img src="./logo.png" alt="REHABcloud Số hoá - Tiết kiệm - Hiệu quả" class="h-10" />
-
     <input 
         type="text" 
         id="searchInput" 
-        placeholder="Tìm kiếm bệnh nhân..." 
+        placeholder="TÌM BỆNH NHÂN CŨ" 
         class="w-full max-w-md p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         oninput="filterTable()"
     />
@@ -121,7 +119,7 @@
         function filterRecentEntries(entries) {
             const today = new Date();
             const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(today.getDate() - 200);
+            thirtyDaysAgo.setDate(today.getDate() - 365);
 
             return entries.filter(entry => {
                 const entryDate = new Date(entry.ngayvaovien);
