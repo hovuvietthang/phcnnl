@@ -12,7 +12,7 @@
 <body class="bg-gray-100 text-gray-800 font-sans">
      <!-- Ô tìm kiếm -->
 <div class="fixed top-0 left-0 right-0 flex justify-center mb-4 bg-white shadow-md z-10 p-4">
-    <img src="logo.png" alt="REHABcloud Số hoá - Tiết kiệm - Hiệu quả" class="h-10" />
+    <img src="./logo.png" alt="REHABcloud Số hoá - Tiết kiệm - Hiệu quả" class="h-10" />
 
     <input 
         type="text" 
@@ -121,7 +121,7 @@
         function filterRecentEntries(entries) {
             const today = new Date();
             const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(today.getDate() - 30);
+            thirtyDaysAgo.setDate(today.getDate() - 200);
 
             return entries.filter(entry => {
                 const entryDate = new Date(entry.ngayvaovien);
