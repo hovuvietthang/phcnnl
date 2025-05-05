@@ -15,7 +15,7 @@
             type="text" 
             placeholder="Tìm bệnh nhân..." 
             class="w-full max-w-xl mx-auto block p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            oninput="filterTable()"
+            onkeydown="checkEnter(event)"
         />
     </div>
 
@@ -118,6 +118,13 @@
             if (newPage >= 1 && newPage <= Math.ceil(allData.length / itemsPerPage)) {
                 currentPage = newPage;
                 displayPage(currentPage);
+            }
+        }
+
+        // Hàm kiểm tra nếu người dùng nhấn Enter
+        function checkEnter(event) {
+            if (event.key === "Enter") {
+                filterTable();
             }
         }
 
