@@ -25,8 +25,8 @@
     <!-- Hiển thị Loading và Progress Bar -->
     <div id="loadingContainer" class="text-center hidden">
         <p id="loadingText" class="text-gray-600">Đang tìm kiếm...</p>
-        <div class="w-full max-w-xl mx-auto mt-4">
-            <progress id="progressBar" class="w-full h-2 bg-blue-200" value="0" max="100"></progress>
+        <div class="w-full max-w-xl mx-auto mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div id="progressBar" class="h-full bg-blue-500 transition-all duration-300 ease-out" style="width: 0%"></div>
         </div>
     </div>
 
@@ -64,7 +64,7 @@
             // Hiển thị loading và tiến độ
             document.getElementById("loadingContainer").classList.remove("hidden");
             const progressBar = document.getElementById("progressBar");
-            progressBar.value = 0;
+            progressBar.style.width = "0%";
 
             try {
                 const res = await fetch(url);
@@ -85,9 +85,10 @@
                         matchedPatients.push(item);
                     }
                     patientsChecked++;
+
                     // Cập nhật thanh tiến độ
                     const progress = Math.floor((patientsChecked / totalPatients) * 100);
-                    progressBar.value = progress;
+                    progressBar.style.width = progress + "%";
                 }
 
                 // Hiển thị kết quả tìm kiếm
