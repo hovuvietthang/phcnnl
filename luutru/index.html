@@ -40,11 +40,16 @@
         </table>
         <p id="noDataMessage" class="text-center text-gray-500 mt-4 hidden">Không có dữ liệu gần đây.</p>
     </div>
+
     <script>
+        // Hàm fetch dữ liệu từ Google Sheets API
         async function fetchData() {
-            const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn"; // Rút gọn URL thực tế
+            const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn"; // Thay thế URL với URL Google Apps Script của bạn
             try {
                 const res = await fetch(url);
+                if (!res.ok) {
+                    throw new Error("Không thể tải dữ liệu từ API.");
+                }
                 const data = await res.json();
 
                 const tbody = document.getElementById("resultTableBody");
@@ -72,9 +77,12 @@
                 });
             } catch (err) {
                 console.error("Lỗi khi tải dữ liệu:", err);
+                document.getElementById("noDataMessage").textContent = "Không thể tải dữ liệu, vui lòng thử lại sau.";
+                document.getElementById("noDataMessage").classList.remove("hidden");
             }
         }
 
+        // Hàm lọc bảng khi người dùng gõ vào ô tìm kiếm
         function filterTable() {
             const input = document.getElementById("searchInput").value.toLowerCase();
             const rows = document.querySelectorAll("#resultTableBody tr");
@@ -90,14 +98,7 @@
             document.getElementById("noDataMessage").classList.toggle("hidden", found);
         }
 
-        document.getElementById("showPopupButton").onclick = () => {
-            document.getElementById("popup").classList.remove("hidden");
-        };
-
-        document.getElementById("closePopupButton").onclick = () => {
-            document.getElementById("popup").classList.add("hidden");
-        };
-
+        // Tải dữ liệu khi trang web được tải
         window.onload = fetchData;
     </script>
 </body>
