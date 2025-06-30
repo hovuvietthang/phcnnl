@@ -1,134 +1,132 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>REHABcloud | Tìm kiếm bệnh nhân</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>REHABcloud | Tìm kiếm bệnh nhân</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <!-- Tìm kiếm -->
-    <div class="fixed top-0 w-full bg-white p-4 shadow z-10">
-        <input 
-            id="searchInput" 
-            type="text" 
-            placeholder="Nhập tên người bệnh và nhấn ENTER" 
-            class="w-full max-w-xl mx-auto block p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            onkeydown="if(event.key === 'Enter') searchPatient()"
-        />
+  <!-- Tìm kiếm -->
+  <div class="fixed top-0 w-full bg-white p-4 shadow z-10">
+    <input 
+      id="searchInput" 
+      type="text" 
+      placeholder="Nhập tên người bệnh và nhấn ENTER" 
+      class="w-full max-w-xl mx-auto block p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+      onkeydown="if(event.key === 'Enter') searchPatient()"
+    />
+  </div>
+
+  <div class="h-24"></div>
+
+  <!-- Loading -->
+  <div id="loadingContainer" class="text-center hidden">
+    <p class="text-gray-600">Đang tìm kiếm...</p>
+    <div class="w-full max-w-xl mx-auto mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
+      <div id="progressBar" class="h-full bg-blue-500 transition-all duration-300 ease-out" style="width: 0%"></div>
     </div>
+  </div>
 
-    <!-- Khoảng trống để tránh che bảng -->
-    <div class="h-24"></div>
+  <!-- Bảng -->
+  <div class="container mx-auto p-4">
+    <table class="min-w-full bg-white shadow rounded">
+      <thead class="bg-blue-500 text-white">
+        <tr>
+          <th class="p-2 text-left">Số HSBA</th>
+          <th class="p-2 text-left">Họ và tên</th>
+          <th class="p-2 text-left">Tuổi</th>
+          <th class="p-2 text-left">Giới tính</th>
+          <th class="p-2 text-left">Ngày vào viện</th>
+          <th class="p-2 text-left">Chẩn đoán</th>
+          <th class="p-2 text-left">Hồ sơ</th>
+        </tr>
+      </thead>
+      <tbody id="resultTableBody"></tbody>
+    </table>
+    <p id="noDataMessage" class="text-center text-gray-500 mt-4 hidden">Không có dữ liệu phù hợp.</p>
+  </div>
 
-    <!-- Hiển thị Loading và Progress Bar -->
-    <div id="loadingContainer" class="text-center hidden">
-        <p id="loadingText" class="text-gray-600">Đang tìm kiếm...</p>
-        <div class="w-full max-w-xl mx-auto mt-4 h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div id="progressBar" class="h-full bg-blue-500 transition-all duration-300 ease-out" style="width: 0%"></div>
-        </div>
-    </div>
+  <!-- Toast -->
+  <div id="toast" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow hidden z-50">
+    Đã sao chép liên kết!
+  </div>
 
-    <!-- Bảng dữ liệu -->
-    <div class="container mx-auto p-4">
-        <table class="min-w-full bg-white shadow rounded">
-            <thead class="bg-blue-500 text-white">
-                <tr>
-                    <th class="p-2 text-left">Số HSBA</th>
-                    <th class="p-2 text-left">Họ và tên</th>
-                    <th class="p-2 text-left">Tuổi</th>
-                    <th class="p-2 text-left">Giới tính</th>
-                    <th class="p-2 text-left">Ngày vào viện</th>
-                    <th class="p-2 text-left">Chẩn đoán</th>
-                    <th class="p-2 text-left">Hồ sơ</th>
-                </tr>
-            </thead>
-            <tbody id="resultTableBody"></tbody>
-        </table>
-        
-        <p id="noDataMessage" class="text-center text-gray-500 mt-4 hidden">Không có dữ liệu phù hợp.</p>
-    </div>
+  <script>
+    async function searchPatient() {
+      const input = document.getElementById("searchInput").value.trim().toLowerCase();
+      if (!input) {
+        alert("Vui lòng nhập tên bệnh nhân.");
+        return;
+      }
 
-    <script>
-        // Hàm tìm kiếm bệnh nhân
-        async function searchPatient() {
-            const input = document.getElementById("searchInput").value.trim().toLowerCase();
-            if (!input) {
-                alert("Vui lòng nhập tên bệnh nhân.");
-                return;
-            }
+      const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn";
 
-            const url = "https://script.googleusercontent.com/macros/echo?user_content_key=O1VPfuCtn-FC-jxeH1lmIfTIXz7xsJ39OWnmAVwMhhjFNVVJwOIPkXtf8E_9imUK94VbUuPYgMiGZzUQTkmeLQrCJX0bDdAlm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnJdCvTcUUt53HQ1B32FemR_AdkJwwEvTcHQH5lerqyagMvvbYJaoV-p_5nSebKGafrIlE9RyJaVhd1A2oAUzsXcitcXpa6bG8w&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn";
+      document.getElementById("loadingContainer").classList.remove("hidden");
+      const progressBar = document.getElementById("progressBar");
+      progressBar.style.width = "0%";
 
-            // Hiển thị loading và tiến độ
-            document.getElementById("loadingContainer").classList.remove("hidden");
-            const progressBar = document.getElementById("progressBar");
-            progressBar.style.width = "0%";
+      try {
+        const res = await fetch(url);
+        if (!res.ok) throw new Error(`Lỗi API: ${res.status} - ${res.statusText}`);
+        const data = await res.json();
 
-            try {
-                const res = await fetch(url);
-                if (!res.ok) {
-                    throw new Error(`Lỗi API: ${res.status} - ${res.statusText}`);
-                }
-                const data = await res.json();
+        const matched = data.filter(p => String(p.hovaten || "").toLowerCase().includes(input));
+        displayData(matched);
+      } catch (err) {
+        document.getElementById("noDataMessage").textContent = "Lỗi: " + err.message;
+        document.getElementById("noDataMessage").classList.remove("hidden");
+      } finally {
+        document.getElementById("loadingContainer").classList.add("hidden");
+      }
+    }
 
-                // Lọc dữ liệu bệnh nhân theo tên và hiển thị tiến độ
-                let matchedPatients = [];
-                let totalPatients = data.length;
-                let patientsChecked = 0;
+    function displayData(data) {
+      const tbody = document.getElementById("resultTableBody");
+      tbody.innerHTML = "";
 
-                for (let i = 0; i < totalPatients; i++) {
-                    const item = data[i];
-                    const name = item.hovaten ? item.hovaten.toString().toLowerCase() : "";
-                    if (name.includes(input)) {
-                        matchedPatients.push(item);
-                    }
-                    patientsChecked++;
+      if (data.length === 0) {
+        document.getElementById("noDataMessage").classList.remove("hidden");
+        return;
+      }
 
-                    // Cập nhật thanh tiến độ
-                    const progress = Math.floor((patientsChecked / totalPatients) * 100);
-                    progressBar.style.width = progress + "%";
-                }
+      document.getElementById("noDataMessage").classList.add("hidden");
 
-                // Hiển thị kết quả tìm kiếm
-                displayData(matchedPatients);
-            } catch (err) {
-                console.error("Lỗi khi tải dữ liệu:", err);
-                document.getElementById("noDataMessage").textContent = `Lỗi khi tải dữ liệu: ${err.message}`;
-                document.getElementById("noDataMessage").classList.remove("hidden");
-            } finally {
-                // Ẩn loading khi xong
-                document.getElementById("loadingContainer").classList.add("hidden");
-            }
-        }
+      data.forEach(item => {
+        const link = item.linkhoso || "#";
+        const row = `
+          <tr class="border-b">
+            <td class="p-2">${item.sohsba || ""}</td>
+            <td class="p-2">${item.hovaten || ""}</td>
+            <td class="p-2">${item.tuoi || ""}</td>
+            <td class="p-2">${item.gioitinh || ""}</td>
+            <td class="p-2">${item.ngayvaovien || ""}</td>
+            <td class="p-2">${item.chandoan || ""}</td>
+            <td class="p-2 flex items-center gap-2">
+              <a href="${link}" target="_blank" class="text-blue-500 underline">Xem</a>
+              <button onclick="copyToClipboard('${link}')" title="Sao chép liên kết">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600 hover:text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+              </button>
+            </td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
+    }
 
-        // Hàm hiển thị dữ liệu tìm kiếm
-        function displayData(data) {
-            const tbody = document.getElementById("resultTableBody");
-            tbody.innerHTML = ""; // Xóa dữ liệu cũ
-
-            if (data.length === 0) {
-                document.getElementById("noDataMessage").classList.remove("hidden");
-            } else {
-                document.getElementById("noDataMessage").classList.add("hidden");
-                data.forEach(item => {
-                    const row = `
-                        <tr class="border-b">
-                            <td class="p-2">${item.sohsba || ""}</td>
-                            <td class="p-2">${item.hovaten || ""}</td>
-                            <td class="p-2">${item.tuoi || ""}</td>
-                            <td class="p-2">${item.gioitinh || ""}</td>
-                            <td class="p-2">${item.ngayvaovien || ""}</td>
-                            <td class="p-2">${item.chandoan || ""}</td>
-                            <td class="p-2">
-                                <a href="${item.linkhoso}" target="_blank" class="text-blue-500 underline">Xem</a>
-                            </td>
-                        </tr>`;
-                    tbody.innerHTML += row;
-                });
-            }
-        }
-    </script>
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById("toast");
+        toast.classList.remove("hidden");
+        setTimeout(() => toast.classList.add("hidden"), 2000);
+      }).catch(err => {
+        alert("Không thể sao chép: " + err);
+      });
+    }
+  </script>
 </body>
 </html>
