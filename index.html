@@ -171,40 +171,87 @@
 
     window.onload = displayData;
   </script>
-<!-- Nút tròn thả nổi -->
-<div class="fixed right-6 bottom-6 flex flex-col space-y-4 z-40">
-  <a href="/phcnnl-main/luutru/index.html" target="_blank" class="bg-green-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 transition duration-300" title="Thông tin thêm">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 15H7a4 4 0 0 0-4 4v2"/><path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/><circle cx="10" cy="7" r="4"/></svg>
-  </a>
-  <a href="https://docs.google.com/spreadsheets/d/1DOf4jfWsrxOL6WERcEufDFzbmyUQiboHgBZmfiCrWeg/edit?gid=27026287#gid=27026287" target="_blank" class="bg-green-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 transition duration-300" title="Google Sheet">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 15H7a4 4 0 0 0-4 4v2"/><path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/><circle cx="10" cy="7" r="4"/></svg>
-  </a>
-  <a href="https://script.google.com/macros/s/AKfycbwIbonN6gGwyQDNxwkIGCUYQEcNFngNgFGQmSDeuLkIWHu5YDrz6IV4g4xYx2_3Z2A/exec" target="_blank" class="bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 transition duration-300" title="Thêm hồ sơ mới">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M3 15h6"/><path d="M6 12v6"/></svg>
-  </a>
-  <a href="https://hovuvietthang97.vercel.app" target="_blank" class="bg-green-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 transition duration-300" title="Trang cá nhân">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-  </a>
-  <a href="javascript:void(0)" class="bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300" title="Hiển thị quy trình" id="showPopupButton">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 22H7a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v.5"/><path d="m16 19 2 2 4-4"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2"/><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/></svg>
-  </a>
+ <!-- Nút tròn thả nổi -->
+<div class="fixed right-6 bottom-6 flex flex-col space-y-4">
+    <a 
+        href="https://rehabcloud.vercel.app/luutru/index.html" 
+        target="_blank" 
+        id="infoButton"
+        class="bg-green-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+        title="Lưu trữ"
+    >
+  <svg class="h-5 w-5 text-slate-50"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <circle cx="11" cy="11" r="8" />  <line x1="21" y1="21" x2="16.65" y2="16.65" /></svg>
+    </a>
+    <a 
+        href="https://docs.google.com/spreadsheets/d/1DOf4jfWsrxOL6WERcEufDFzbmyUQiboHgBZmfiCrWeg/edit?gid=27026287#gid=27026287" 
+        target="_blank" 
+        id="infoButton"
+        class="bg-green-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+        title="Thông tin thêm"
+    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.5 15H7a4 4 0 0 0-4 4v2"></path><path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path><circle cx="10" cy="7" r="4"></circle></svg>
+    </a>
+    <a 
+        href="https://script.google.com/macros/s/AKfycbz-8sTSF706A7rN007eqyDEm_dCi_ShRu2YeONkLKpAFzslCneSfb4dI5BJgc5Zkpqr/exec" 
+        target="_blank" 
+        class="bg-blue-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-600 transition duration-300"
+        title="THÊM HỒ SƠ MỚI"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h14a2 2 0 0 0 2-2V7l-5-5H6a2 2 0 0 0-2 2v4"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M3 15h6"></path><path d="M6 12v6"></path></svg>
+    </a>
+    <!-- Nút tròn thả nổi mới -->
+    <a 
+        href="https://hovuvietthang97.vercel.app" 
+        target="_blank" 
+        id="infoButton"
+        class="bg-green-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-green-600 transition duration-300"
+        title="Thông tin thêm"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+    </a>
+    <!-- Nút tròn phía trên -->
+    <a 
+        href="javascript:void(0)" 
+        class="bg-yellow-500 text-white w-12 h-12 flex items-center justify-center rounded-full shadow-lg hover:bg-yellow-600 transition duration-300"
+        title="Hiển thị quy trình"
+        id="showPopupButton"
+    >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.5 22H7a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v.5"></path><path d="m16 19 2 2 4-4"></path><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v2"></path><path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"></path></svg>
+    </a>
 </div>
 
-<!-- Popup hình ảnh quy trình -->
-<div id="popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
-  <div class="relative w-[80vw] h-[80vh] bg-white shadow-lg rounded-lg">
-    <button id="closePopupButton" class="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full">X</button>
-    <img src="/quytrinh.png" alt="Quy trình" class="w-full h-full object-contain rounded-lg" />
-  </div>
-</div>
 
+<!-- Popup hiển thị hình ảnh khi nhấp -->
+<div id="popup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+    <div class="relative w-[80vw] h-[80vh] bg-white shadow-lg rounded-lg">
+        <!-- Nút đóng -->
+        <button id="closePopupButton" class="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full">X</button>
+        <!-- Hình ảnh quy trình -->
+        <img src="/quytrinh.png" alt="Quy trình" class="w-full h-full object-contain rounded-lg" />
+    </div>
+</div>
 <script>
-  document.getElementById("showPopupButton").addEventListener("click", () => {
-    document.getElementById("popup").classList.remove("hidden");
-  });
-  document.getElementById("closePopupButton").addEventListener("click", () => {
-    document.getElementById("popup").classList.add("hidden");
-  });
+    // Lấy các phần tử
+    const showPopupButton = document.getElementById('showPopupButton');
+    const popup = document.getElementById('popup');
+    const closePopupButton = document.getElementById('closePopupButton');
+
+    // Hiển thị popup khi nhấp vào nút
+    showPopupButton.addEventListener('click', () => {
+        popup.classList.remove('hidden'); // Loại bỏ lớp 'hidden' để popup hiện lên
+    });
+
+    // Đóng popup khi nhấp vào nút "X"
+    closePopupButton.addEventListener('click', () => {
+        popup.classList.add('hidden'); // Thêm lại lớp 'hidden' để popup ẩn đi
+    });
+
+    // Đóng popup khi nhấp ra ngoài (cả vùng đen mờ)
+    popup.addEventListener('click', (event) => {
+        if (event.target === popup) {
+            popup.classList.add('hidden'); // Ẩn popup nếu người dùng nhấp ra ngoài
+        }
+    });
 </script>
 
 </body>
