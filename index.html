@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>REHABcloud Số hoá - Tiết kiệm - Hiệu quả</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="icon" href="favicon.ico" type="image/x-icon" />
   <style>
@@ -15,163 +16,159 @@
       animation: fade-in 0.3s ease-out;
       transition: opacity 0.5s ease;
     }
+    @media (max-width: 768px) {
+      .hide-on-mobile {
+        display: none;
+      }
+    }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-800 font-sans">
 
-  <!-- Thanh tìm kiếm -->
-  <div class="fixed top-0 left-0 right-0 flex justify-center mb-4 bg-white shadow-md z-10 p-4 space-x-4">
-    <img src="logo.png" alt="Logo" class="h-10" />
-    <input 
-      type="text" 
-      id="searchInput" 
-      placeholder="Tìm kiếm bệnh nhân..." 
-      class="w-full max-w-md p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-      oninput="filterTable()" 
-    />
+<!-- Thanh tìm kiếm -->
+<div class="fixed top-0 left-0 right-0 flex flex-wrap justify-center items-center gap-4 bg-white shadow-md z-10 p-4">
+  <img src="logo.png" alt="Logo" class="h-10" />
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="Tìm kiếm bệnh nhân..." 
+    class="w-full sm:max-w-md p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+    oninput="filterTable()" 
+  />
+  <span id="totalRecords" class="text-sm text-gray-600"></span>
+</div>
+<br><br><br>
+
+<!-- Bảng dữ liệu -->
+<div class="container mx-auto p-4">
+  <div class="bg-white shadow-md rounded-lg overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse border border-gray-200">
+      <thead class="sticky top-0 bg-blue-500 text-white">
+        <tr>
+          <th class="px-4 py-2 border hide-on-mobile">Số HSBA</th>
+          <th class="px-4 py-2 border">Họ và tên</th>
+          <th class="px-4 py-2 border hide-on-mobile">Tuổi</th>
+          <th class="px-4 py-2 border hide-on-mobile">Giới tính</th>
+          <th class="px-4 py-2 border">Ngày vào viện</th>
+          <th class="px-4 py-2 border hide-on-mobile">Chẩn đoán</th>
+          <th class="px-4 py-2 border">Hồ sơ</th>
+        </tr>
+      </thead>
+      <tbody id="resultTableBody"></tbody>
+    </table>
   </div>
-  <br><br><br>
+  <p id="countResult" class="text-center text-sm text-gray-600 mt-2"></p>
+  <p id="noDataMessage" class="text-center text-gray-500 mt-4 hidden">Không có bệnh nhân trong 30 ngày gần nhất.</p>
+</div>
 
-  <!-- Bảng dữ liệu -->
-  <div class="container mx-auto p-4">
-    <div class="bg-white shadow-md rounded-lg overflow-hidden">
-      <table class="min-w-full table-auto border-collapse border border-gray-200">
-        <thead class="sticky top-0 bg-blue-500 text-white">
-          <tr>
-            <th class="px-4 py-2 border">Số HSBA</th>
-            <th class="px-4 py-2 border">Họ và tên</th>
-            <th class="px-4 py-2 border">Tuổi</th>
-            <th class="px-4 py-2 border">Giới tính</th>
-            <th class="px-4 py-2 border">Ngày vào viện</th>
-            <th class="px-4 py-2 border">Chẩn đoán</th>
-            <th class="px-4 py-2 border">Hồ sơ</th>
-          </tr>
-        </thead>
-        <tbody id="resultTableBody"></tbody>
-      </table>
-    </div>
-    <p id="countResult" class="text-center text-sm text-gray-600 mt-2"></p>
-    <p id="noDataMessage" class="text-center text-gray-500 mt-4 hidden">Không có bệnh nhân trong 30 ngày gần nhất.</p>
-  </div>
-
-  <!-- Toast -->
-  <script>
-    function showToast(message, type = 'success') {
-      const toast = document.createElement("div");
-      const bg = type === 'success' ? 'bg-green-500' : 'bg-red-500';
-      toast.className = `fixed top-4 right-4 ${bg} text-white px-4 py-2 rounded shadow-lg z-50 animate-fade-in`;
-      toast.textContent = message;
-      document.body.appendChild(toast);
-      setTimeout(() => {
-        toast.classList.add("opacity-0");
-        setTimeout(() => toast.remove(), 500);
-      }, 2000);
+<script>
+  async function fetchData() {
+    try {
+      const response = await fetch('https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLhEw2Au3u4NeDNCIZLHihaJj533xq_6O4BtlXN4GP24h5U7PyxnfuINegLzaCwiHRupqouith33SkLZnJnBBtmICJSbYL5O0D-ufnMbK5GIViF-0-M_HKbndzBRkC_c1-h8PZXGZl8JU0qbpw9F0nFntjymUjEdyGUtScUEkb7gJetJJ3_ssEQmYP7af2oGInKWydD9QvJ2So6CBKh_04yWd0ulz36gIVz9Pr2T41cmEyprpBCZEvkmF0CpCDQxcn0F11O0SkEi9glZL7cXJ7YT3mTLgQ&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn');
+      if (!response.ok) throw new Error('Không thể kết nối đến máy chủ');
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error("Lỗi tải dữ liệu:", error);
+      showToast("Không thể tải dữ liệu. Vui lòng thử lại sau!", 'error');
+      return [];
     }
-  </script>
+  }
 
-  <!-- Script chính -->
-  <script>
-    async function fetchData() {
-      try {
-        const response = await fetch('https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLhEw2Au3u4NeDNCIZLHihaJj533xq_6O4BtlXN4GP24h5U7PyxnfuINegLzaCwiHRupqouith33SkLZnJnBBtmICJSbYL5O0D-ufnMbK5GIViF-0-M_HKbndzBRkC_c1-h8PZXGZl8JU0qbpw9F0nFntjymUjEdyGUtScUEkb7gJetJJ3_ssEQmYP7af2oGInKWydD9QvJ2So6CBKh_04yWd0ulz36gIVz9Pr2T41cmEyprpBCZEvkmF0CpCDQxcn0F11O0SkEi9glZL7cXJ7YT3mTLgQ&lib=M6C_v2HTfHLlLRH0ki4RwMcTi32_F69pn');
-        if (!response.ok) throw new Error('Không thể kết nối đến máy chủ');
-        const data = await response.json();
-        return data;
-      } catch (error) {
-        console.error("Lỗi tải dữ liệu:", error);
-        showToast("Không thể tải dữ liệu. Vui lòng thử lại sau!", 'error');
-        return [];
-      }
-    }
+  function filterRecentEntries(entries) {
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+    return entries.filter(entry => {
+      const entryDate = new Date(entry.ngayvaovien);
+      return entryDate >= thirtyDaysAgo && entryDate <= today;
+    });
+  }
 
-    function filterRecentEntries(entries) {
-      const today = new Date();
-      const thirtyDaysAgo = new Date();
-      thirtyDaysAgo.setDate(today.getDate() - 30);
-      return entries.filter(entry => {
-        const entryDate = new Date(entry.ngayvaovien);
-        return entryDate >= thirtyDaysAgo && entryDate <= today;
+  function removeAccents(str) {
+    return str.normalize("NFD").replace(/\p{Diacritic}/gu, "");
+  }
+
+  function filterTable() {
+    const input = removeAccents(document.getElementById("searchInput").value.toLowerCase());
+    const rows = document.querySelectorAll("#resultTableBody tr");
+    rows.forEach(row => {
+      const text = removeAccents(row.innerText.toLowerCase());
+      row.style.display = text.includes(input) ? "" : "none";
+    });
+  }
+
+  function copyLink(link) {
+    navigator.clipboard.writeText(link).then(() => {
+      showToast("\u0110\u00e3 sao ch\u00e9p link h\u1ed3 s\u01a1");
+    }).catch(err => {
+      console.error("Lỗi sao chép:", err);
+      showToast("Không thể sao chép link", 'error');
+    });
+  }
+
+  async function displayData() {
+    const tableBody = document.getElementById("resultTableBody");
+    const noDataMessage = document.getElementById("noDataMessage");
+    const countResult = document.getElementById("countResult");
+    const totalRecords = document.getElementById("totalRecords");
+
+    const data = await fetchData();
+    totalRecords.textContent = `Tổng số hồ sơ: ${data.length}`;
+
+    const filteredData = filterRecentEntries(data);
+    tableBody.innerHTML = "";
+    countResult.textContent = "";
+
+    if (filteredData.length > 0) {
+      noDataMessage.classList.add("hidden");
+      countResult.textContent = `Tìm thấy ${filteredData.length} bệnh nhân trong 30 ngày qua.`;
+
+      const fragment = document.createDocumentFragment();
+      filteredData.forEach(entry => {
+        const row = document.createElement("tr");
+        row.classList.add("border-t", "hover:bg-gray-100");
+        row.innerHTML = `
+          <td class="px-4 py-2 border hide-on-mobile">${entry.hsba}</td>
+          <td class="px-4 py-2 border">${entry.hovaten}</td>
+          <td class="px-4 py-2 border hide-on-mobile">${entry.tuoi}</td>
+          <td class="px-4 py-2 border hide-on-mobile">${entry.gioitinh}</td>
+          <td class="px-4 py-2 border">${entry.ngayvaovien}</td>
+          <td class="px-4 py-2 border hide-on-mobile">${entry.chandoan}</td>
+          <td class="px-4 py-2 border">
+            <div class="flex items-center space-x-2">
+              <a href="${entry.linkhoso}" target="_blank" title="Xem hồ sơ">
+                <i class="fa-solid fa-file-lines"></i>
+              </a>
+              <button onclick="copyLink('${entry.linkhoso}')" title="Sao chép link">
+                <i class="fa-solid fa-copy"></i>
+              </button>
+            </div>
+          </td>`;
+        fragment.appendChild(row);
       });
+
+      tableBody.appendChild(fragment);
+    } else {
+      noDataMessage.classList.remove("hidden");
     }
+  }
 
-    function removeAccents(str) {
-      return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-    }
+  function showToast(message, type = 'success') {
+    const toast = document.createElement("div");
+    const bg = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+    toast.className = `fixed top-4 right-4 ${bg} text-white px-4 py-2 rounded shadow-lg z-50 animate-fade-in`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add("opacity-0");
+      setTimeout(() => toast.remove(), 500);
+    }, 2000);
+  }
 
-    function filterTable() {
-      const input = removeAccents(document.getElementById("searchInput").value.toLowerCase());
-      const rows = document.querySelectorAll("#resultTableBody tr");
-      rows.forEach(row => {
-        const text = removeAccents(row.innerText.toLowerCase());
-        row.style.display = text.includes(input) ? "" : "none";
-      });
-    }
-
-    function copyLink(link) {
-      navigator.clipboard.writeText(link).then(() => {
-        showToast("Đã sao chép link hồ sơ");
-      }).catch(err => {
-        console.error("Lỗi sao chép:", err);
-        showToast("Không thể sao chép link", 'error');
-      });
-    }
-
-    async function displayData() {
-      const tableBody = document.getElementById("resultTableBody");
-      const noDataMessage = document.getElementById("noDataMessage");
-      const countResult = document.getElementById("countResult");
-
-      const data = await fetchData();
-      const filteredData = filterRecentEntries(data);
-      tableBody.innerHTML = "";
-      countResult.textContent = "";
-
-      if (filteredData.length > 0) {
-        noDataMessage.classList.add("hidden");
-        countResult.textContent = `Tìm thấy ${filteredData.length} bệnh nhân trong 30 ngày qua.`;
-
-        const fragment = document.createDocumentFragment();
-
-        filteredData.forEach(entry => {
-          const row = document.createElement("tr");
-          row.classList.add("border-t", "hover:bg-gray-100");
-          row.innerHTML = `
-            <td class="px-4 py-2 border">${entry.hsba}</td>
-            <td class="px-4 py-2 border">${entry.hovaten}</td>
-            <td class="px-4 py-2 border">${entry.tuoi}</td>
-            <td class="px-4 py-2 border">${entry.gioitinh}</td>
-            <td class="px-4 py-2 border">${entry.ngayvaovien}</td>
-            <td class="px-4 py-2 border">${entry.chandoan}</td>
-            <td class="px-4 py-2 border">
-              <div class="flex items-center space-x-2">
-                <a href="${entry.linkhoso}" target="_blank" title="Xem hồ sơ">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="rgb(59 130 246)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="m18 5-2.414-2.414A2 2 0 0 0 14.172 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2"></path>
-                    <path d="M21.378 12.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"></path>
-                    <path d="M8 18h1"></path>
-                  </svg>
-                </a>
-                <button onclick="copyLink('${entry.linkhoso}')" title="Sao chép link">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="#4b5563" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                  </svg>
-                </button>
-              </div>
-            </td>
-          `;
-          fragment.appendChild(row);
-        });
-
-        tableBody.appendChild(fragment);
-      } else {
-        noDataMessage.classList.remove("hidden");
-      }
-    }
-
-    window.onload = displayData;
-  </script>
- <!-- Nút tròn thả nổi -->
+  window.onload = displayData;
+</script>
+<!-- Nút tròn thả nổi -->
 <div class="fixed right-6 bottom-6 flex flex-col space-y-4">
     <a 
         href="https://rehabcloud.vercel.app/luutru/index.html" 
@@ -253,6 +250,5 @@
         }
     });
 </script>
-
 </body>
 </html>
