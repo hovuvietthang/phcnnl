@@ -267,39 +267,6 @@
         }
     });
 </script>
-<!-- Popup thông báo mỗi 1 tiếng -->
-<div id="popupThongBao" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50 hidden">
-  <div class="relative w-full max-w-4xl p-4">
-    <img src="thongbao.png" alt="Thông báo" class="w-full rounded-lg shadow-lg" />
-    <button onclick="closePopupThongBao()" class="absolute top-3 right-3 bg-white hover:bg-gray-100 text-gray-700 px-3 py-1 rounded-full shadow">
-      Đóng
-    </button>
-  </div>
-</div>
-
-<script>
-  const POPUP_KEY = "popupThongBaoLastShown";
-  const ONE_HOUR = 60 * 60 * 1000; // 1 tiếng
-
-  function shouldShowPopupThongBao() {
-    const lastShown = localStorage.getItem(POPUP_KEY);
-    if (!lastShown) return true;
-    return (Date.now() - parseInt(lastShown)) > ONE_HOUR;
-  }
-
-  function showPopupThongBao() {
-    if (shouldShowPopupThongBao()) {
-      document.getElementById("popupThongBao").classList.remove("hidden");
-      localStorage.setItem(POPUP_KEY, Date.now().toString());
-    }
-  }
-
-  function closePopupThongBao() {
-    document.getElementById("popupThongBao").classList.add("hidden");
-  }
-
-  window.addEventListener('load', showPopupThongBao);
-</script>
-
 </body>
 </html>
+
